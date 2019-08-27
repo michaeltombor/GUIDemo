@@ -57,13 +57,13 @@ public class FXMLDocumentController implements Initializable {
 
     //These items are for the ListView and TextArea example
     @FXML private ListView listView; 
-    @FXML private TextArea golfTextArea;
+    @FXML private TextArea textArea;
     
     //When this method is called, it will change the scene to a TableView example
     
     public void changeScreenButtonPushed(ActionEvent event) throws IOException
     {
-        Parent tableViewParent = FXMLLoader.load(getClass().getClassLoader().getResource("ExampleOfTableView.fxml"));
+        Parent tableViewParent = FXMLLoader.load(getClass().getResource("ExampleOfTableView.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
         
         //This line gets the Stage information
@@ -114,17 +114,20 @@ public class FXMLDocumentController implements Initializable {
     }
     
     //This method will copy the Strings from the ListView and put them in the text area
-    public void listViewButtonPushed() {
+    public void listViewButtonPushed()
+     {
         String textAreaString = "";
         
-        ObservableList listOfItems = listView.getSelectionModel().getSelectedItems(); 
+        ObservableList listOfItems = listView.getSelectionModel().getSelectedItems();
         
-        for (Object item : listOfItems) {
-            textAreaString += String.format("%s%n", (String) item);
+        for (Object item : listOfItems)
+        {
+            textAreaString += String.format("%s%n",(String) item);
         }
         
-        golfTextArea.setText(textAreaString);
-    }
+        this.textArea.setText(textAreaString);
+     }
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
