@@ -7,6 +7,7 @@ package guidemo;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +15,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 
 /**
@@ -45,17 +49,20 @@ public class FXMLDocumentController implements Initializable {
     @FXML private RadioButton javaScriptRadioButton; 
     @FXML private ToggleGroup favoriteLanguageToggleGroup;
 
+    //These items are for the ListView and TextArea example
+    @FXML private ListView listView; 
+    @FXML private TextArea textArea;
     
     
     
-    //This will update the Label for ChoiceBox
+    //This method will update the Label for ChoiceBox
     public void choiceBoxButtonPushed() {
         choiceBoxLabel.setText("My favorite fruit is: "+ choiceBox.getValue().toString());
        
     }
     
     
-    //This is for Checkbox example
+    //This method is for Checkbox example
     public void pizzaOrderButtonPushed() {
         String order = "Toppings are: ";
         if (pepperoniCheckBox.isSelected()) 
@@ -68,13 +75,13 @@ public class FXMLDocumentController implements Initializable {
         this.pizzaOrderLabel.setText(order);
     }
     
-    //This is for Combobox exaple. It will update comboBoxLabel when the ComboBox is changed. 
+    //This method is for Combobox exaple. It will update comboBoxLabel when the ComboBox is changed. 
     
     public void comboBoxWasUpdated() {
         this.comboBoxLabel.setText("Course selected: \n" + comboBox.getValue().toString());
     }
     
-    //This is for the RadioButton example. 
+    //This method is for the RadioButton example. 
     public void radioButtonPushed() {
         if (this.favoriteLanguageToggleGroup.getSelectedToggle().equals(this.pythonRadioButton))
             radioButtonLabel.setText("Your favorite language is\n Python");
@@ -85,6 +92,19 @@ public class FXMLDocumentController implements Initializable {
         if (this.favoriteLanguageToggleGroup.getSelectedToggle().equals(this.javaScriptRadioButton))
             radioButtonLabel.setText("Your favorite language is\n JavaScript");
         
+    }
+    
+    //This method will copy the Strings from the ListView and put them in the text area
+    public void listViewButtonPushed() {
+        String textAreaString = "";
+        
+        ObservableList listOfItems = listView.getSelectionModel().getSelectedItems(); 
+        
+        for (Object item : listOfItems) {
+            textAreaString += String.format("%s%n", (String) item);
+        }
+        
+        textArea.setText(textAreaString);
     }
     
     @Override
@@ -110,6 +130,10 @@ public class FXMLDocumentController implements Initializable {
         this.cSharpRadioButton.setToggleGroup(favoriteLanguageToggleGroup);
         this.javaRadioButton.setToggleGroup(favoriteLanguageToggleGroup);
         this.javaScriptRadioButton.setToggleGroup(favoriteLanguageToggleGroup);
+        
+        //These items are for configuring the TextArea and ListView
+        listView.getItems().addAll("Golf Balls", "Wedges", "Irons", "Tees", "Driver", "Putter");
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }    
     
 }
