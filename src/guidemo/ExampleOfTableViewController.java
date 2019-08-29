@@ -21,9 +21,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
@@ -41,6 +43,11 @@ public class ExampleOfTableViewController implements Initializable {
     @FXML private TableColumn<Person, String> lastNameColumn;
     @FXML private TableColumn<Person, LocalDate> birthdayColumn;
     
+    //These instance vars are used to create new Person objects
+    @FXML private TextField firstNameTextField;
+    @FXML private TextField lastNameTextField;
+    @FXML private DatePicker birthdayDatePicker;
+    
    //This method will allow the user to double click on a cell and update the first name of the person.
     
     public void changeFirstNameCellEvent(CellEditEvent edittedCell){
@@ -54,8 +61,6 @@ public class ExampleOfTableViewController implements Initializable {
         Person personSelected = tableView.getSelectionModel().getSelectedItem();
         personSelected.setLastName(edittedCell.getNewValue().toString());
     }
-    
-    
     
     public void changeScreenButtonPushed(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
@@ -83,6 +88,18 @@ public class ExampleOfTableViewController implements Initializable {
         firstNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         lastNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }    
+    
+    //This method will create a new Person and add it to the table
+    
+    public void newPersonButtonPushed() {
+        //Get all of the values from the text fields
+        Person newPerson = new Person(firstNameTextField.getText(), 
+                lastNameTextField.getText(),
+                birthdayDatePicker.getValue());
+        //Get all items from the table as a list, then add the new person to the list
+        tableView.getItems().add(newPerson);
+        
+    }
     
     //This method will return an ObservableList of People objects
     public ObservableList<Person> getPeople() {
