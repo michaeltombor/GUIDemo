@@ -22,8 +22,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 /**
@@ -38,6 +40,22 @@ public class ExampleOfTableViewController implements Initializable {
     @FXML private TableColumn<Person, String> firstNameColumn;
     @FXML private TableColumn<Person, String> lastNameColumn;
     @FXML private TableColumn<Person, LocalDate> birthdayColumn;
+    
+   //This method will allow the user to double click on a cell and update the first name of the person.
+    
+    public void changeFirstNameCellEvent(CellEditEvent edittedCell){
+        Person personSelected = tableView.getSelectionModel().getSelectedItem();
+        personSelected.setFirstName(edittedCell.getNewValue().toString());
+    }
+    
+    //This method will allow the user to double click on a cell and update the last name of the person.
+    
+    public void changeLasttNameCellEvent(CellEditEvent edittedCell){
+        Person personSelected = tableView.getSelectionModel().getSelectedItem();
+        personSelected.setLastName(edittedCell.getNewValue().toString());
+    }
+    
+    
     
     public void changeScreenButtonPushed(ActionEvent event) throws IOException {
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
@@ -58,6 +76,12 @@ public class ExampleOfTableViewController implements Initializable {
         
         //load the dummy data
         tableView.setItems(getPeople());
+        
+        //Update the table to allow for the first and last name fields
+        //to be editable
+        tableView.setEditable(true);
+        firstNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        lastNameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
     }    
     
     //This method will return an ObservableList of People objects
